@@ -9,10 +9,7 @@
 #ifndef PSTR
 #define PSTR // Make Arduino Due happy
 #endif
-
 #define PIN 6
-
-
 #define HEIGHT 13
 #define WIDTH 13
 
@@ -32,7 +29,6 @@ uint16_t nextBoard[WIDTH][HEIGHT];
 uint16_t generationNumber = 0;
 
 void setup() {
-
   Serial.begin(9600);
   Serial.println("Conways Game of Life for Neopixel");
   matrix.begin();
@@ -41,10 +37,8 @@ void setup() {
   matrix.setTextColor(colors[0]);
   matrix.fillScreen(0);
   initBoard();
-  //  printFreeRam();
+  printFreeRam();
 }
-
-
 
 void initBoard() {
   for (uint16_t y = 0; y < HEIGHT; y++) {
@@ -88,11 +82,9 @@ void loop() {
   //  colorWipe(blue, 1000);
   // colorWipe(red, 5);
   drawBoard();
-  delay(100);
-
+  delay(1000);
   calculateNextState();
-  // printFreeRam();
-
+  printFreeRam();
 }
 
 // Fill the pixels one after the other with a color
@@ -106,13 +98,9 @@ void colorWipe(RGB color, uint8_t wait) {
       delay(wait);
     }
   }
-
-
 }
 
 void linetest(RGB color, uint8_t wait) {
-
-
   uint16_t y = 0;
   for (uint16_t x = 0; x < WIDTH; x++) {
 
@@ -139,12 +127,11 @@ void calculateNextState() {
       } else {
         nextBoard[x][y] =  board[x][y];
       }
-
     }
   }
   generationNumber++;
   copyArraystate();
-  printStateToSerial();
+  //printStateToSerial();
 }
 
 void printStateToSerial() {
@@ -168,8 +155,9 @@ void printFreeRam() {
   Serial.println(freeRam());
 
 }
+
 int countNeighbours(uint16_t xu, uint16_t yu ) {
-  //casting here is kinda wrong but since our board is small it does not currentyl matter
+  //casting here is kinda wrong but since our board is small it does not currently matter
   int x = (int) xu;
   int y = (int) yu;
   int neighbours = 0;
@@ -223,17 +211,12 @@ void drawBoard() {
         color = off;
       }
       matrix.drawPixel(x, y, matrix.Color(color.r, color.g, color.b));
-
-
-
     }
   }
   matrix.show();
-
-
 }
-void copyArraystate() {
 
+void copyArraystate() {
   for (uint16_t y = 0; y < HEIGHT; y++) {
     for (uint16_t x = 0; x < WIDTH; x++) {
       board[x][y] =  nextBoard[x][y];
